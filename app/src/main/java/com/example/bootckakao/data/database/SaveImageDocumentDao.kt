@@ -10,7 +10,7 @@ import com.example.bootckakao.data.model.local.SaveImageDocumentEntity
 interface SaveImageDocumentDao {
 
     @Query("SELECT * FROM save_imageDocuments")
-    suspend fun getAll() : List<SaveImageDocumentEntity>
+    suspend fun getAll(): List<SaveImageDocumentEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(saveImageDocumentEntity: SaveImageDocumentEntity)
@@ -23,7 +23,6 @@ interface SaveImageDocumentDao {
 
     @Query("DELETE FROM save_imageDocuments WHERE imageUrl = :imageUrl")
     suspend fun deleteSaveImageDocument(imageUrl: String)
-
 
 
 //예제

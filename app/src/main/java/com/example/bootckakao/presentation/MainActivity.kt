@@ -5,9 +5,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.bootckakao.R
 import com.example.bootckakao.databinding.ActivityMainBinding
+import com.example.bootckakao.presentation.BookMark.BookMarkFragment
 import com.example.bootckakao.presentation.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,8 +20,14 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val transaction: FragmentTransaction by lazy {
-        supportFragmentManager.beginTransaction()
+    private val fragmentManager: FragmentManager by lazy {
+        supportFragmentManager
+    }
+    private val searchFragment: SearchFragment by lazy {
+        SearchFragment()
+    }
+    private val bookMarkFragment: BookMarkFragment by lazy {
+        BookMarkFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,30 +44,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupFragment() {
-        transaction.add(R.id.fragment_container, SearchFragment())
+        val transaction = fragmentManager.beginTransaction()
+        transaction.add(R.id.fragment_container, searchFragment)
         transaction.commit()
     }
 
     private fun setupListener() {
         binding.btnSearchFrag.setOnClickListener {
-            setFragment(FRAGMENT_SEARCH)
+            val transaction = fragmentManager.beginTransaction()
+            setFragment(transaction, FRAGMENT_SEARCH)
         }
 
         binding.btnBookmarkFrag.setOnClickListener {
-            setFragment(FRAGMENT_BOOKMARK)
+            val transaction = fragmentManager.beginTransaction()
+            setFragment(transaction, FRAGMENT_BOOKMARK)
         }
 
     }
 
-    private fun setFragment(fragment: Int) {
+    private fun setFragment(transaction: FragmentTransaction, fragment: Int) {
         when (fragment) {
             FRAGMENT_SEARCH -> {
-                transaction.replace(R.id.fragment_container, SearchFragment())
+                transaction.replace(R.id.fragment_container, searchFragment)
                 transaction.commit()
             }
 
             FRAGMENT_BOOKMARK -> {
-                transaction.replace(R.id.fragment_container, BookMarkFragment())
+                transaction.replace(R.id.fragment_container, bookMarkFragment)
                 transaction.commit()
             }
         }
