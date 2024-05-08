@@ -5,20 +5,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bootckakao.R
-import com.example.bootckakao.databinding.ItemSearchBinding
+import com.example.bootckakao.databinding.ItemBookMarkBinding
 import com.example.bootckakao.domain.search.model.ImageDocumentEntity
 
-class SearchViewHolder(
+class BookMarkViewHolder(
     parent: ViewGroup
 ) : RecyclerView.ViewHolder(
-    LayoutInflater.from(parent.context).inflate(R.layout.item_search, parent, false)
+    LayoutInflater.from(parent.context).inflate(R.layout.item_book_mark, parent, false)
 ) {
 
-    private val binding = ItemSearchBinding.bind(itemView)
+    private val binding = ItemBookMarkBinding.bind(itemView)
 
     fun bind(
         imageDocumentEntity: ImageDocumentEntity,
-        searchFavoriteClickListener: SearchFavoriteClickListener
+        bookMarkClickListener: BookMarkClickListener
     ) {
 
         Glide.with(itemView.context)
@@ -27,12 +27,8 @@ class SearchViewHolder(
             .into(binding.ivImg)
         binding.tvTitle.text = imageDocumentEntity.displaySitename
         binding.tvDate.text = imageDocumentEntity.datetime
-        binding.acbFavorite.isChecked = imageDocumentEntity.favorite
-        binding.acbFavorite.setOnClickListener {
-            searchFavoriteClickListener.onFavoriteItemClick(
-                adapterPosition,
-                imageDocumentEntity
-            )
+        binding.bookMarkItem.setOnLongClickListener {
+            bookMarkClickListener.onItemLongeClick(adapterPosition, imageDocumentEntity)
         }
     }
 }

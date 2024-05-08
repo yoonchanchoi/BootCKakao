@@ -1,4 +1,4 @@
-package com.example.bootckakao.presentation.search.recyclerview
+package com.example.bootckakao.util
 
 import android.graphics.Rect
 import android.view.View

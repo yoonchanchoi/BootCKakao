@@ -1,0 +1,18 @@
+package com.example.bootckakao.data.model.local
+
+
+import com.example.bootckakao.domain.search.model.ImageDocumentEntity
+
+fun SaveImageDocumentEntity.toImageDocumentEntity() = ImageDocumentEntity(
+    collection = collection,
+    thumbnailUrl = thumbnailUrl,
+    imageUrl = imageUrl,
+    width = width,
+    height = height,
+    displaySitename = displaySitename,
+    docUrl = docUrl,
+    datetime = datetime,
+    favorite = favorite
+)
+
+

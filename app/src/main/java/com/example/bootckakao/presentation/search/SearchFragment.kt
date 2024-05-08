@@ -12,8 +12,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bootckakao.databinding.FragmentSearchBinding
 import com.example.bootckakao.domain.search.model.ImageDocumentEntity
+import com.example.bootckakao.util.GridSpaceItemDecoration
 import com.example.bootckakao.presentation.MainViewModel
-import com.example.bootckakao.presentation.search.recyclerview.GridSpaceItemDecoration
 import com.example.bootckakao.presentation.search.recyclerview.SearchAdapter
 import com.example.bootckakao.presentation.search.recyclerview.SearchFavoriteClickListener
 import com.example.bootckakao.util.Constants
@@ -48,6 +48,7 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("cyc","Searchfrag---onViewCreated")
         setSearchAdapter()
         setupData()
         setupObserve()
@@ -55,9 +56,7 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
     }
 
     private fun setupData() {
-        Log.e("cyc", "입력된 값 세팅")
         pref.getString(Constants.SAVE_SEARCH)?.let {
-            Log.e("cyc", "pref 입력된 값 --->${it}")
             query = it
             if (it.isNotEmpty()) {
                 binding.etSearch.setText(query)
@@ -66,9 +65,6 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
         }
     }
 
-    private fun setupView() {
-
-    }
 
     private fun setupObserve() {
         viewModel.imageDocumentEntities.observe(viewLifecycleOwner) {
@@ -89,15 +85,16 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
                 Toast.makeText(requireActivity(), "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 
     private fun setSearchAdapter() {
         val searchManager =
             GridLayoutManager(requireActivity(), 2)
         binding.rv.apply {
+//            addItemDecoration(GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx()))
             layoutManager = searchManager
             adapter = searchAdapter
-            addItemDecoration(GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx()))
 //            val spanCount = 2
 //            val space = 20
 //            addItemDecoration(GridSpaceItemDecoration(spanCount, space))
@@ -105,23 +102,9 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
     }
 
     override fun onFavoriteItemClick(
-        compoundButton: CompoundButton,
-        isChecked: Boolean,
         position: Int,
         item: ImageDocumentEntity
     ) {
-        Log.e("cyc", "isChecked-->${isChecked}")
-        if (isChecked) {
-            item.favorite = true
-            Toast.makeText(requireActivity(), "체크됨", Toast.LENGTH_SHORT).show()
-            Log.e("cyc", "체크됨")
-            Log.e("cyc", "체크됨--item-->${item}")
-
-        } else {
-            item.favorite = false
-            Toast.makeText(requireActivity(), "체크 안됨", Toast.LENGTH_SHORT).show()
-            Log.e("cyc", "체크 안됨")
-            Log.e("cyc", "체크 안됨--item-->${item}")
-        }
+        viewModel.addOrDelete(item)
     }
 }
