@@ -2,9 +2,12 @@ package com.example.bootckakao.data.repository
 
 import com.example.bootckakao.data.database.SaveImageDocumentDao
 import com.example.bootckakao.data.datasource.SearchDataSource
+import com.example.bootckakao.data.model.local.SaveImageDocumentEntity
+import com.example.bootckakao.data.model.local.toImageDocumentEntity
 import com.example.bootckakao.domain.search.model.SearchEntity
 import com.example.bootckakao.data.model.remote.toEntity
 import com.example.bootckakao.domain.search.model.Favorite
+import com.example.bootckakao.domain.search.model.ImageDocumentEntity
 import com.example.bootckakao.domain.search.repository.DefaultSearchRepository
 import javax.inject.Inject
 
@@ -53,4 +56,20 @@ class DefaultSearchRepositoryImpl @Inject constructor(
 //        }
         return searchEntity
     }
+
+    override suspend fun addSaveImageDocumentEntity(saveImageDocumentEntity: SaveImageDocumentEntity) {
+        saveImageDocumentDao.insert(saveImageDocumentEntity)
+    }
+
+    override suspend fun deleteSaveImageDocumentEntity(imageUrl: String) {
+        saveImageDocumentDao.deleteSaveImageDocument(imageUrl)
+    }
+
+    override suspend fun getAllSavaImageDocumentEntity(): List<ImageDocumentEntity> {
+        return saveImageDocumentDao.getAll().map {
+            it.toImageDocumentEntity()
+        }
+    }
+
+
 }

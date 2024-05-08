@@ -1,7 +1,6 @@
 package com.example.bootckakao.presentation.search
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bootckakao.databinding.FragmentSearchBinding
 import com.example.bootckakao.domain.search.model.ImageDocumentEntity
+import com.example.bootckakao.util.GridSpaceItemDecoration
 import com.example.bootckakao.presentation.MainViewModel
-import com.example.bootckakao.presentation.search.recyclerview.GridSpaceItemDecoration
 import com.example.bootckakao.presentation.search.recyclerview.SearchAdapter
 import com.example.bootckakao.presentation.search.recyclerview.SearchFavoriteClickListener
 import com.example.bootckakao.util.Constants
@@ -55,9 +54,7 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
     }
 
     private fun setupData() {
-        Log.e("cyc", "입력된 값 세팅")
         pref.getString(Constants.SAVE_SEARCH)?.let {
-            Log.e("cyc", "pref 입력된 값 --->${it}")
             query = it
             if (it.isNotEmpty()) {
                 binding.etSearch.setText(query)
@@ -66,9 +63,6 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
         }
     }
 
-    private fun setupView() {
-
-    }
 
     private fun setupObserve() {
         viewModel.imageDocumentEntities.observe(viewLifecycleOwner) {
@@ -110,18 +104,12 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
         position: Int,
         item: ImageDocumentEntity
     ) {
-        Log.e("cyc", "isChecked-->${isChecked}")
         if (isChecked) {
             item.favorite = true
-            Toast.makeText(requireActivity(), "체크됨", Toast.LENGTH_SHORT).show()
-            Log.e("cyc", "체크됨")
-            Log.e("cyc", "체크됨--item-->${item}")
-
+            viewModel.addBookMark(item)
         } else {
             item.favorite = false
-            Toast.makeText(requireActivity(), "체크 안됨", Toast.LENGTH_SHORT).show()
-            Log.e("cyc", "체크 안됨")
-            Log.e("cyc", "체크 안됨--item-->${item}")
+            viewModel.deleteBookMark(item.imageUrl)
         }
     }
 }

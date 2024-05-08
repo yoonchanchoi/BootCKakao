@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentTransaction
 import com.example.bootckakao.R
 import com.example.bootckakao.databinding.ActivityMainBinding
+import com.example.bootckakao.presentation.BookMark.BookMarkFragment
 import com.example.bootckakao.presentation.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
