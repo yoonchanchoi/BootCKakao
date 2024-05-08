@@ -33,23 +33,10 @@ class MainViewModel @Inject constructor(
     fun requestSearch(query: String) {
         CoroutineScope(Dispatchers.Default)
         viewModelScope.launch {
-            select()
             val imageDocumentList = requestSearchUseCase(query).documents
             imageDocumentList.let {
                 _imageDocumentEntities.value = it
             }
         }
     }
-
-
-    suspend fun select(){
-        withContext(Dispatchers.IO){
-
-        }
-        CoroutineScope(Dispatchers.IO){
-            d
-        }
-    }
-
-
 }

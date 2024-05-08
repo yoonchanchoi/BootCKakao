@@ -11,5 +11,5 @@ data class ImageDocumentEntity(
     val displaySitename: String = "",
     val docUrl: String = "",
     val datetime: String = "",
-    val favorite: Boolean = false
+    var favorite: Boolean = false
 )
