@@ -11,7 +11,7 @@ import com.example.bootckakao.domain.search.model.ImageDocumentEntity
 class BookMarkViewHolder(
     parent: ViewGroup
 ) : RecyclerView.ViewHolder(
-    LayoutInflater.from(parent.context).inflate(R.layout.item_search, parent, false)
+    LayoutInflater.from(parent.context).inflate(R.layout.item_book_mark, parent, false)
 ) {
 
     private val binding = ItemBookMarkBinding.bind(itemView)

@@ -7,7 +7,7 @@ import com.example.bootckakao.domain.search.model.SearchEntity
 interface DefaultSearchRepository {
 
     //일반 api
-    suspend fun requestSearch(query: String): SearchEntity
+    suspend fun requestSearch(query: String): List<ImageDocumentEntity>
 
     suspend fun addSaveImageDocumentEntity(saveImageDocumentEntity: SaveImageDocumentEntity)
 

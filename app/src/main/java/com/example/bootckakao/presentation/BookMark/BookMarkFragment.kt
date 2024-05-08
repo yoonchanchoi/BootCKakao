@@ -57,9 +57,9 @@ class BookMarkFragment : Fragment(), BookMarkClickListener {
         val bookMarkManager =
             GridLayoutManager(requireActivity(), 2)
         binding.rv.apply {
+//            addItemDecoration(GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx()))
             layoutManager = bookMarkManager
             adapter = bookMarkAdapter
-            addItemDecoration(GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx()))
         }
 
     }

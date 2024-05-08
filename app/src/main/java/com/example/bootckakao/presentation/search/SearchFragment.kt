@@ -1,6 +1,7 @@
 package com.example.bootckakao.presentation.search
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,7 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("cyc","Searchfrag---onViewCreated")
         setSearchAdapter()
         setupData()
         setupObserve()
@@ -83,15 +85,16 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
                 Toast.makeText(requireActivity(), "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 
     private fun setSearchAdapter() {
         val searchManager =
             GridLayoutManager(requireActivity(), 2)
         binding.rv.apply {
+//            addItemDecoration(GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx()))
             layoutManager = searchManager
             adapter = searchAdapter
-            addItemDecoration(GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx()))
 //            val spanCount = 2
 //            val space = 20
 //            addItemDecoration(GridSpaceItemDecoration(spanCount, space))
@@ -99,17 +102,9 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
     }
 
     override fun onFavoriteItemClick(
-        compoundButton: CompoundButton,
-        isChecked: Boolean,
         position: Int,
         item: ImageDocumentEntity
     ) {
-        if (isChecked) {
-            item.favorite = true
-            viewModel.addBookMark(item)
-        } else {
-            item.favorite = false
-            viewModel.deleteBookMark(item.imageUrl)
-        }
+        viewModel.addOrDelete(item)
     }
 }

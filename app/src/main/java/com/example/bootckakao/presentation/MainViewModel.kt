@@ -36,9 +36,14 @@ class MainViewModel @Inject constructor(
 //        Log.e("cyc", Thread.currentThread().name)
 //    } }
 
+
+//    init {
+//        getAllBookMark()
+//    }
+
     fun requestSearch(query: String) {
         viewModelScope.launch {
-            val imageDocumentList = requestSearchUseCase(query).documents
+            val imageDocumentList = requestSearchUseCase(query)
             imageDocumentList.let {
                 _imageDocumentEntities.value = it
             }
@@ -54,6 +59,7 @@ class MainViewModel @Inject constructor(
     fun deleteBookMark(imageUrl: String) {
         viewModelScope.launch {
             deleteSaveImageDocumentEntityUseCase(imageUrl)
+//            getAllBookMark()
         }
     }
 
@@ -63,6 +69,14 @@ class MainViewModel @Inject constructor(
             bookMarkImageDocumentList?.let {
                 _bookMarkImageDocumentEntities.value = bookMarkImageDocumentList
             }
+        }
+    }
+
+    fun addOrDelete(imageDocumentEntity: ImageDocumentEntity) {
+        if (imageDocumentEntity.favorite) {
+            deleteBookMark(imageDocumentEntity.imageUrl)
+        } else {
+            addBookMark(imageDocumentEntity.copy(favorite = true))
         }
     }
 }

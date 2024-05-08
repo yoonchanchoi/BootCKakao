@@ -1,5 +1,6 @@
 package com.example.bootckakao.data.repository
 
+import android.util.Log
 import com.example.bootckakao.data.database.SaveImageDocumentDao
 import com.example.bootckakao.data.datasource.SearchDataSource
 import com.example.bootckakao.data.model.local.SaveImageDocumentEntity
@@ -28,7 +29,7 @@ class DefaultSearchRepositoryImpl @Inject constructor(
 //
 //    }
 
-    override suspend fun requestSearch(query: String): SearchEntity {
+    override suspend fun requestSearch(query: String): List<ImageDocumentEntity> {
 //        searchDataSource.requestSearch(query).toEntity().documents?.let {
 //            it.map {imageDocumentEntity ->
 //                if(saveImageDocumentDao.selectSaveImageDocumentEntity(imageDocumentEntity.imageUrl)!=null){
@@ -39,22 +40,14 @@ class DefaultSearchRepositoryImpl @Inject constructor(
 //        val searchResponse = searchDataSource.requestSearch(query)
         val searchEntity = searchDataSource.requestSearch(query).toEntity()
 
-        searchEntity.documents?.let {
-            it.map { imageDocumentEntity ->
-                if (saveImageDocumentDao.selectSaveImageDocumentEntity(imageDocumentEntity.imageUrl) != null) {
-                    imageDocumentEntity.favorite = Favorite.FAVORITE.isFavorite
-                } else {
-                    imageDocumentEntity.favorite = Favorite.HATE.isFavorite
-                }
+
+        return searchEntity.documents?.map{ imageDocumentEntity ->
+            if (saveImageDocumentDao.selectSaveImageDocumentEntity(imageDocumentEntity.imageUrl) != null) {
+                imageDocumentEntity.copy(favorite = Favorite.FAVORITE.isFavorite)
+            } else {
+                imageDocumentEntity.copy(favorite = Favorite.HATE.isFavorite)
             }
-        }
-//        searchResponse.documents.map {
-//
-//        }
-//        searchEntity.documents.forEach {
-//            it.entity()
-//        }
-        return searchEntity
+        }?: emptyList()
     }
 
     override suspend fun addSaveImageDocumentEntity(saveImageDocumentEntity: SaveImageDocumentEntity) {

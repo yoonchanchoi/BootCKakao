@@ -28,10 +28,8 @@ class SearchViewHolder(
         binding.tvTitle.text = imageDocumentEntity.displaySitename
         binding.tvDate.text = imageDocumentEntity.datetime
         binding.acbFavorite.isChecked = imageDocumentEntity.favorite
-        binding.acbFavorite.setOnCheckedChangeListener { compoundButton, b ->
+        binding.acbFavorite.setOnClickListener {
             searchFavoriteClickListener.onFavoriteItemClick(
-                compoundButton,
-                b,
                 adapterPosition,
                 imageDocumentEntity
             )
