@@ -6,17 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bootckakao.databinding.FragmentSearchBinding
-import com.example.bootckakao.domain.search.model.ImageDocumentEntity
-import com.example.bootckakao.util.GridSpaceItemDecoration
-import com.example.bootckakao.presentation.MainViewModel
+import com.example.bootckakao.domain.search.model.ImageDocument
 import com.example.bootckakao.presentation.search.recyclerview.SearchAdapter
 import com.example.bootckakao.presentation.search.recyclerview.SearchFavoriteClickListener
 import com.example.bootckakao.util.Constants
+import com.example.bootckakao.util.GridSpaceItemDecoration
 import com.example.bootckakao.util.Pref
 import com.example.bootckakao.util.fromDpToPx
 import com.example.bootckakao.util.hideSoftKeyboard
@@ -30,12 +28,16 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
     lateinit var pref: Pref
 
     private lateinit var binding: FragmentSearchBinding
-
     private val searchAdapter: SearchAdapter by lazy {
         SearchAdapter(this)
     }
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val gridSpaceItemDecoration: GridSpaceItemDecoration by lazy {
+        GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx())
+    }
+
+    //    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: SearchViewModel by viewModels()
     private var query = ""
 
     override fun onCreateView(
@@ -48,7 +50,6 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("cyc","Searchfrag---onViewCreated")
         setSearchAdapter()
         setupData()
         setupObserve()
@@ -68,6 +69,7 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
 
     private fun setupObserve() {
         viewModel.imageDocumentEntities.observe(viewLifecycleOwner) {
+            Log.e("cyc", "검색 내용 -->${it}")
             searchAdapter.submitList(it)
         }
     }
@@ -75,7 +77,10 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
     private fun setupListener() {
         binding.btnSearch.setOnClickListener {
             query = binding.etSearch.text.toString()
-            if (!query.isNullOrEmpty()) {
+            Log.e("cyc","query-->${query}")
+            if (query.isNotEmpty()) {
+                Log.e("cyc","돌아간다.")
+                Log.e("cyc","query.trim()-->${query.trim()}")
                 viewModel.requestSearch(query.trim())
                 pref.putData(Constants.SAVE_SEARCH, query.trim())
                 binding.etSearch.setText(query.trim())
@@ -92,19 +97,17 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
         val searchManager =
             GridLayoutManager(requireActivity(), 2)
         binding.rv.apply {
-//            addItemDecoration(GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx()))
+            addItemDecoration(gridSpaceItemDecoration)
             layoutManager = searchManager
             adapter = searchAdapter
-//            val spanCount = 2
-//            val space = 20
-//            addItemDecoration(GridSpaceItemDecoration(spanCount, space))
         }
     }
 
     override fun onFavoriteItemClick(
         position: Int,
-        item: ImageDocumentEntity
+        item: ImageDocument
     ) {
+        Log.e("cyc","북마크 체크 관련 리스너")
         viewModel.addOrDelete(item)
     }
 }

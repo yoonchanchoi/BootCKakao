@@ -1,14 +1,12 @@
 package com.example.bootckakao.data.repository
 
-import android.util.Log
 import com.example.bootckakao.data.database.SaveImageDocumentDao
 import com.example.bootckakao.data.datasource.SearchDataSource
 import com.example.bootckakao.data.model.local.SaveImageDocumentEntity
 import com.example.bootckakao.data.model.local.toImageDocumentEntity
-import com.example.bootckakao.domain.search.model.SearchEntity
 import com.example.bootckakao.data.model.remote.toEntity
-import com.example.bootckakao.domain.search.model.Favorite
-import com.example.bootckakao.domain.search.model.ImageDocumentEntity
+import com.example.bootckakao.data.model.remote.toImageDocument
+import com.example.bootckakao.domain.search.model.ImageDocument
 import com.example.bootckakao.domain.search.repository.DefaultSearchRepository
 import javax.inject.Inject
 
@@ -18,51 +16,30 @@ class DefaultSearchRepositoryImpl @Inject constructor(
 ) : DefaultSearchRepository {
 
 
-//    override suspend fun requestSearch(
-//        query: String
-//    ): SearchEntity =
-//        searchDataSource.requestSearch(query).toEntity()
-
-//    override suspend fun requestSearch(query: String): SearchEntity {
-//        val searchResponse = searchDataSource.requestSearch(query)
-//
-//
-//    }
-
-    override suspend fun requestSearch(query: String): List<ImageDocumentEntity> {
-//        searchDataSource.requestSearch(query).toEntity().documents?.let {
-//            it.map {imageDocumentEntity ->
-//                if(saveImageDocumentDao.selectSaveImageDocumentEntity(imageDocumentEntity.imageUrl)!=null){
-//                    imageDocumentEntity.favorite = Favorite.FAVORITE.isFavorite
-//                }
-//            }
-//        }
-//        val searchResponse = searchDataSource.requestSearch(query)
-        val searchEntity = searchDataSource.requestSearch(query).toEntity()
-
-
-        return searchEntity.documents?.map{ imageDocumentEntity ->
-            if (saveImageDocumentDao.selectSaveImageDocumentEntity(imageDocumentEntity.imageUrl) != null) {
-                imageDocumentEntity.copy(favorite = Favorite.FAVORITE.isFavorite)
-            } else {
-                imageDocumentEntity.copy(favorite = Favorite.HATE.isFavorite)
-            }
+    override suspend fun requestSearch(query: String): List<ImageDocument> {
+        val searchEntity = searchDataSource.requestSearch(query)
+        val imageUrls = saveImageDocumentDao.getAllImageUrl()
+        return searchEntity.documents?.map { imageDocumentResponse ->
+            if (imageUrls.contains(imageDocumentResponse.imageUrl)) imageDocumentResponse.toImageDocument(
+                true
+            ) else imageDocumentResponse.toImageDocument(false)
         }?: emptyList()
     }
 
-    override suspend fun addSaveImageDocumentEntity(saveImageDocumentEntity: SaveImageDocumentEntity) {
-        saveImageDocumentDao.insert(saveImageDocumentEntity)
+    override suspend fun addSaveImageDocumentEntity(imageDocument: ImageDocument) {
+        saveImageDocumentDao.insert(imageDocument.toEntity())
     }
 
     override suspend fun deleteSaveImageDocumentEntity(imageUrl: String) {
         saveImageDocumentDao.deleteSaveImageDocument(imageUrl)
     }
 
-    override suspend fun getAllSavaImageDocumentEntity(): List<ImageDocumentEntity> {
+    override suspend fun getAllSavaImageDocumentEntity(): List<ImageDocument> {
         return saveImageDocumentDao.getAll().map {
             it.toImageDocumentEntity()
         }
     }
+
 
 
 }

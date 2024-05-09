@@ -1,9 +1,9 @@
 package com.example.bootckakao.data.model.local
 
 
-import com.example.bootckakao.domain.search.model.ImageDocumentEntity
+import com.example.bootckakao.domain.search.model.ImageDocument
 
-fun SaveImageDocumentEntity.toImageDocumentEntity() = ImageDocumentEntity(
+fun SaveImageDocumentEntity.toImageDocumentEntity() = ImageDocument(
     collection = collection,
     thumbnailUrl = thumbnailUrl,
     imageUrl = imageUrl,
