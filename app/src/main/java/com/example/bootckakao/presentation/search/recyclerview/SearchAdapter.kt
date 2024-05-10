@@ -2,11 +2,11 @@ package com.example.bootckakao.presentation.search.recyclerview
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.example.bootckakao.domain.search.model.ImageDocumentEntity
+import com.example.bootckakao.domain.search.model.ImageDocument
 
 class SearchAdapter(
     private val searchFavoriteClickListener: SearchFavoriteClickListener
-) : ListAdapter<ImageDocumentEntity, SearchViewHolder>(SearchDiffUtil()) {
+) : ListAdapter<ImageDocument, SearchViewHolder>(SearchDiffUtil()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

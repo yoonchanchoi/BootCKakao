@@ -1,8 +1,6 @@
 package com.example.bootckakao.domain.search.model
 
-import java.util.Date
-
-data class ImageDocumentEntity(
+data class ImageDocument(
     val collection: String = "",
     val thumbnailUrl: String = "",
     val imageUrl: String = "",

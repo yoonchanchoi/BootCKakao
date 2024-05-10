@@ -21,6 +21,10 @@ interface SaveImageDocumentDao {
     @Query("SELECT * FROM save_imageDocuments WHERE imageUrl in (:imageUrls)")
     suspend fun selectSaveImageDocumentEntity(imageUrls: List<String>): List<SaveImageDocumentEntity>
 
+    @Query("SELECT imageUrl FROM save_imageDocuments")
+    suspend fun getAllImageUrl(): List<String>
+
+
     @Query("DELETE FROM save_imageDocuments WHERE imageUrl = :imageUrl")
     suspend fun deleteSaveImageDocument(imageUrl: String)
 

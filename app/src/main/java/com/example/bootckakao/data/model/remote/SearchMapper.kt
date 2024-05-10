@@ -1,24 +1,16 @@
 package com.example.bootckakao.data.model.remote
 
 
-import com.example.bootckakao.domain.search.model.ImageDocumentEntity
-import com.example.bootckakao.domain.search.model.MetaEntity
-import com.example.bootckakao.domain.search.model.SearchEntity
+import com.example.bootckakao.domain.search.model.ImageDocument
+import com.example.bootckakao.domain.search.model.Meta
 
-fun SearchResponse.toEntity() = SearchEntity(
-    meta = meta?.toEntity(),
-    documents = documents?.map {
-        it.toEntity()
-    }
-)
-
-fun MetaResponse.toEntity() = MetaEntity(
+fun MetaResponse.toMeta() = Meta(
     totalCount = totalCount,
     pageableCount = pageableCount,
     isEnd = isEnd,
 )
 
-fun ImageDocumentResponse.toEntity() = ImageDocumentEntity(
+fun ImageDocumentResponse.toImageDocument(favorite: Boolean) = ImageDocument(
     collection = collection,
     thumbnailUrl = thumbnailUrl,
     imageUrl = imageUrl,
@@ -27,7 +19,7 @@ fun ImageDocumentResponse.toEntity() = ImageDocumentEntity(
     displaySitename = displaySitename,
     docUrl = docUrl,
     datetime = datetime.toChangeDate(),
-    favorite = false
+    favorite = favorite
 )
 
 

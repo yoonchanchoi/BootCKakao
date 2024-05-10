@@ -1,6 +1,7 @@
 package com.example.bootckakao.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,7 +10,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.bootckakao.R
 import com.example.bootckakao.databinding.ActivityMainBinding
-import com.example.bootckakao.presentation.BookMark.BookMarkFragment
+import com.example.bootckakao.presentation.bookMark.BookMarkFragment
 import com.example.bootckakao.presentation.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupFragment() {
         val transaction = fragmentManager.beginTransaction()
-        transaction.add(R.id.fragment_container, searchFragment)
+        transaction.add(R.id.fragment_container,  SearchFragment())
         transaction.commit()
     }
 
@@ -65,12 +66,12 @@ class MainActivity : AppCompatActivity() {
     private fun setFragment(transaction: FragmentTransaction, fragment: Int) {
         when (fragment) {
             FRAGMENT_SEARCH -> {
-                transaction.replace(R.id.fragment_container, searchFragment)
+                transaction.replace(R.id.fragment_container,  SearchFragment())
                 transaction.commit()
             }
 
             FRAGMENT_BOOKMARK -> {
-                transaction.replace(R.id.fragment_container, bookMarkFragment)
+                transaction.replace(R.id.fragment_container, BookMarkFragment())
                 transaction.commit()
             }
         }
