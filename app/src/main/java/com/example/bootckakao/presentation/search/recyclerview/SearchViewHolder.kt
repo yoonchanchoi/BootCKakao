@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bootckakao.R
 import com.example.bootckakao.databinding.ItemSearchBinding
-import com.example.bootckakao.domain.search.model.ImageDocumentEntity
+import com.example.bootckakao.domain.search.model.ImageDocument
 
 class SearchViewHolder(
     parent: ViewGroup
@@ -17,7 +17,7 @@ class SearchViewHolder(
     private val binding = ItemSearchBinding.bind(itemView)
 
     fun bind(
-        imageDocumentEntity: ImageDocumentEntity,
+        imageDocumentEntity: ImageDocument,
         searchFavoriteClickListener: SearchFavoriteClickListener
     ) {
 
