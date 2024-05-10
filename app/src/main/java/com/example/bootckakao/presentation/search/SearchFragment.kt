@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bootckakao.databinding.FragmentSearchBinding
 import com.example.bootckakao.domain.search.model.ImageDocument
+import com.example.bootckakao.presentation.MainViewModel
 import com.example.bootckakao.presentation.search.recyclerview.SearchAdapter
 import com.example.bootckakao.presentation.search.recyclerview.SearchFavoriteClickListener
 import com.example.bootckakao.util.Constants
@@ -36,9 +38,10 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
         GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx())
     }
 
-    //    private val viewModel: MainViewModel by activityViewModels()
-    private val viewModel: SearchViewModel by viewModels()
+        private val viewModel: MainViewModel by activityViewModels()
+//    private val viewModel: SearchViewModel by viewModels()
     private var query = ""
+    private lateinit var imageDocumentEntities: List<ImageDocument>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +73,8 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
     private fun setupObserve() {
         viewModel.imageDocumentEntities.observe(viewLifecycleOwner) {
             Log.e("cyc", "검색 내용 -->${it}")
-            searchAdapter.submitList(it)
+            imageDocumentEntities = it
+            searchAdapter.submitList(imageDocumentEntities)
         }
     }
 
@@ -90,7 +94,6 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
                 Toast.makeText(requireActivity(), "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     private fun setSearchAdapter() {
@@ -109,5 +112,22 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
     ) {
         Log.e("cyc","북마크 체크 관련 리스너")
         viewModel.addOrDelete(item)
+//        if (item.favorite) {
+//            viewModel.deleteBookMark(item.imageUrl)
+//            imageDocumentEntities.mapIndexed { index, imageDocument ->
+//                if(index==position){
+//                    imageDocument.copy(favorite = false)
+//                }
+//            }
+//        } else {
+//            Log.e("cyc","북마크 체크 했을때")
+//            viewModel.addBookMark(item.copy(favorite = true))
+//            imageDocumentEntities.mapIndexed { index, imageDocument ->
+//                if(index==position){
+//                    imageDocument.copy(favorite = true)
+//                }
+//            }
+//        }
     }
+
 }

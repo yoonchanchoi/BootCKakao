@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bootckakao.databinding.FragmentBookMarkBinding
 import com.example.bootckakao.domain.search.model.ImageDocument
+import com.example.bootckakao.presentation.MainViewModel
 import com.example.bootckakao.presentation.search.recyclerview.BookMarkAdapter
 import com.example.bootckakao.presentation.search.recyclerview.BookMarkClickListener
 import com.example.bootckakao.util.GridSpaceItemDecoration
@@ -22,7 +24,7 @@ class BookMarkFragment : Fragment(), BookMarkClickListener {
     private lateinit var binding: FragmentBookMarkBinding
 
 //    private val viewModel: MainViewModel by activityViewModels()
-    private val viewModel: BookMarkViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private val bookMarkAdapter: BookMarkAdapter by lazy {
         BookMarkAdapter(this)
     }
