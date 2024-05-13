@@ -1,5 +1,6 @@
 package com.example.bootckakao.presentation.search.recyclerview
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,10 @@ class SearchViewHolder(
             .into(binding.ivImg)
         binding.tvTitle.text = imageDocumentEntity.displaySitename
         binding.tvDate.text = imageDocumentEntity.datetime
+
         binding.acbFavorite.isChecked = imageDocumentEntity.favorite
+        Log.e("cyc","adapterPosition-->${adapterPosition}")
+        Log.e("cyc","imageDocumentEntity.favorite-->${imageDocumentEntity.favorite}")
         binding.acbFavorite.setOnClickListener {
             searchFavoriteClickListener.onFavoriteItemClick(
                 adapterPosition,

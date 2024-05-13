@@ -10,6 +10,7 @@ import com.example.bootckakao.domain.search.usecase.AddSaveImageDocumentEntityUs
 import com.example.bootckakao.domain.search.usecase.DeleteSaveImageDocumentEntityUseCase
 import com.example.bootckakao.domain.search.usecase.GetAllSaveImageDocumentEntityUseCase
 import com.example.bootckakao.domain.search.usecase.RequestSearchUseCase
+import com.example.bootckakao.presentation.search.toChangeImageDocument
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,6 +31,9 @@ class MainViewModel @Inject constructor(
     private val _bookMarkImageDocumentEntities = MutableLiveData<List<ImageDocument>>()
     val bookMarkImageDocumentEntities: LiveData<List<ImageDocument>>
         get() = _bookMarkImageDocumentEntities
+
+
+
 
     init {
         getAllBookMark()
@@ -56,14 +60,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun addOrDelete(imageDocumentEntity: ImageDocument) {
-        if (imageDocumentEntity.favorite) {
-            deleteBookMark(imageDocumentEntity.imageUrl)
-        } else {
-            Log.e("cyc","북마크 체크 했을때")
-            addBookMark(imageDocumentEntity.copy(favorite = true))
-        }
-    }
+//    fun addOrDelete(imageDocumentEntity: ImageDocument) {
+//        if (imageDocumentEntity.favorite) {
+//            deleteBookMark(imageDocumentEntity.imageUrl)
+//        } else {
+//            Log.e("cyc","북마크 체크 했을때")
+//            addBookMark(imageDocumentEntity.copy(favorite = true))
+//        }
+//    }
 
 
     fun getAllBookMark() {
@@ -71,6 +75,35 @@ class MainViewModel @Inject constructor(
             val bookMarkImageDocumentList = getAllSaveImageDocumentEntityUseCase()
             bookMarkImageDocumentList?.let {
                 _bookMarkImageDocumentEntities.value = bookMarkImageDocumentList
+            }
+        }
+    }
+
+    fun addOrDelete(position: Int, imageDocumentEntity: ImageDocument) {
+        if (imageDocumentEntity.favorite) {
+            deleteBookMark(imageDocumentEntity.imageUrl)
+            _imageDocumentEntities.value?.let {
+                it.mapIndexed { index, imageDocument ->
+                    if(index == position){
+                        Log.e("cyc","같은 북마크 체크")
+                        imageDocument.toChangeImageDocument(false)
+//                        imageDocument.copy(favorite = false)
+                    }
+                }
+                _imageDocumentEntities.value=it
+            }
+
+        } else {
+            Log.e("cyc","북마크 체크 했을때")
+            addBookMark(imageDocumentEntity.copy(favorite = true))
+            _imageDocumentEntities.value?.let {
+                it.mapIndexed { index, imageDocument ->
+                    if(index == position){
+                        imageDocument.toChangeImageDocument(true)
+//                        imageDocument.copy(favorite = true)
+                    }
+                }
+                _imageDocumentEntities.value=it
             }
         }
     }

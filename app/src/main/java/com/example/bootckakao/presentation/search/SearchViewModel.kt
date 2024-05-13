@@ -25,6 +25,11 @@ class SearchViewModel @Inject constructor(
         get() = _imageDocumentEntities
 
 
+
+    init {
+        Log.e("cyc","searchFarg--init")
+    }
+
     fun requestSearch(query: String) {
         viewModelScope.launch {
             val imageDocumentList = requestSearchUseCase(query)
@@ -46,13 +51,31 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun addOrDelete(imageDocumentEntity: ImageDocument) {
+    fun addOrDelete(position: Int, imageDocumentEntity: ImageDocument) {
         if (imageDocumentEntity.favorite) {
             deleteBookMark(imageDocumentEntity.imageUrl)
+            _imageDocumentEntities.value?.let {
+                it.mapIndexed { index, imageDocument ->
+                    if(index == position){
+                        imageDocument.copy(favorite = false)
+                    }
+                }
+                _imageDocumentEntities.value=it
+            }
+
         } else {
             Log.e("cyc","북마크 체크 했을때")
             addBookMark(imageDocumentEntity.copy(favorite = true))
+            _imageDocumentEntities.value?.let {
+                it.mapIndexed { index, imageDocument ->
+                    if(index == position){
+                        imageDocument.copy(favorite = true)
+                    }
+                }
+                _imageDocumentEntities.value=it
+            }
         }
     }
+
 
 }

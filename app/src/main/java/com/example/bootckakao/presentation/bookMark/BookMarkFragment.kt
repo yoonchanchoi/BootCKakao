@@ -23,8 +23,8 @@ class BookMarkFragment : Fragment(), BookMarkClickListener {
 
     private lateinit var binding: FragmentBookMarkBinding
 
-//    private val viewModel: MainViewModel by activityViewModels()
     private val viewModel: MainViewModel by activityViewModels()
+//    private val viewModel: BookMarkViewModel by viewModels()
     private val bookMarkAdapter: BookMarkAdapter by lazy {
         BookMarkAdapter(this)
     }

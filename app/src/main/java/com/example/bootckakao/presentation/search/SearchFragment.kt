@@ -34,11 +34,12 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
         SearchAdapter(this)
     }
 
+
     private val gridSpaceItemDecoration: GridSpaceItemDecoration by lazy {
         GridSpaceItemDecoration(spanCount = 2, spacing = 20f.fromDpToPx())
     }
 
-        private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 //    private val viewModel: SearchViewModel by viewModels()
     private var query = ""
     private lateinit var imageDocumentEntities: List<ImageDocument>
@@ -73,8 +74,7 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
     private fun setupObserve() {
         viewModel.imageDocumentEntities.observe(viewLifecycleOwner) {
             Log.e("cyc", "검색 내용 -->${it}")
-            imageDocumentEntities = it
-            searchAdapter.submitList(imageDocumentEntities)
+            searchAdapter.submitList(it)
         }
     }
 
@@ -111,7 +111,7 @@ class SearchFragment : Fragment(), SearchFavoriteClickListener {
         item: ImageDocument
     ) {
         Log.e("cyc","북마크 체크 관련 리스너")
-        viewModel.addOrDelete(item)
+        viewModel.addOrDelete(position, item)
 //        if (item.favorite) {
 //            viewModel.deleteBookMark(item.imageUrl)
 //            imageDocumentEntities.mapIndexed { index, imageDocument ->

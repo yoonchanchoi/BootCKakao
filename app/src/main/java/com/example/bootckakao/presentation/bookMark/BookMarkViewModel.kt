@@ -1,5 +1,6 @@
 package com.example.bootckakao.presentation.bookMark
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,7 @@ class BookMarkViewModel @Inject constructor(
         get() = _bookMarkImageDocumentEntities
 
     init {
+        Log.e("cyc","bookmarkFarg--init")
         getAllBookMark()
     }
 
@@ -40,5 +42,11 @@ class BookMarkViewModel @Inject constructor(
                 _bookMarkImageDocumentEntities.value = bookMarkImageDocumentList
             }
         }
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.e("cyc","boorkFarg--생명주기끝")
     }
 }
